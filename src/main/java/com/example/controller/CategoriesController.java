@@ -56,7 +56,7 @@ public class CategoriesController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("get/{page}")
+    @GetMapping("get")
     public ResponseEntity<?> getCategories(@PathVariable int page){
         JSONObject response = new JSONObject().appendField("error", true);
         try {
