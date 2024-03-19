@@ -57,7 +57,7 @@ public class CategoriesController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("get")
-    public ResponseEntity<?> getCategories(@PathVariable int page){
+    public ResponseEntity<?> getCategories(){
         JSONObject response = new JSONObject().appendField("error", true);
         try {
             List<CategoryEntity> categories = (List<CategoryEntity>) categoryRepository.findAll();
