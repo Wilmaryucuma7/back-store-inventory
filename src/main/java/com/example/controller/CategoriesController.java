@@ -42,6 +42,29 @@ public class CategoriesController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/update/{categoryId}")
+    public ResponseEntity<?> updateCategory(@PathVariable String categoryId, @Valid @RequestBody CategoryEntity category) {
+        JSONObject response = new JSONObject().appendField("error", true);
+        try {
+            CategoryEntity categoryEntity = categoryRepository.findById(categoryId).orElse(null);
+            if (categoryEntity == null) {
+                response.put("response", "La categoria seleccionada no existe");
+                return ResponseEntity.badRequest().body(response);
+            }
+            categoryEntity.setCategoryName(category.getCategoryName());
+            categoryEntity.setCategoryDescription(category.getCategoryDescription());
+            categoryRepository.save(categoryEntity);
+
+            response.put("error", false);
+            response.put("response", "La categoria se ha actualizado correctamente");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("response", "Ha ocurrido un error al actualizar la categoria");
+            return ResponseEntity.internalServerError().body(response);
+        }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{categoryId}")
     public ResponseEntity<?> deleteCategory(@PathVariable String categoryId){
         JSONObject response = new JSONObject().appendField("error", true);
@@ -89,6 +112,25 @@ public class CategoriesController {
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             response.put("response", "Ha ocurrido un error al obtener las categorias");
+            return ResponseEntity.internalServerError().body(response);
+        }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("get-by-id/{categoryId}")
+    public ResponseEntity<?> getCategoryById(@PathVariable String categoryId){
+        JSONObject response = new JSONObject().appendField("error", true);
+        try {
+            CategoryEntity category = categoryRepository.findById(categoryId).orElse(null);
+            if (category == null) {
+                response.put("response", "La categoria seleccionada no existe");
+                return ResponseEntity.badRequest().body(response);
+            }
+            response.put("response", category);
+            response.put("error", false);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("response", "Ha ocurrido un error al obtener la categoria");
             return ResponseEntity.internalServerError().body(response);
         }
     }
