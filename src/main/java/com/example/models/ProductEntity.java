@@ -19,7 +19,6 @@ import javax.validation.constraints.Size;
 @Table(name = "products")
 public class ProductEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String productId;
 
     @NotBlank
@@ -36,10 +35,11 @@ public class ProductEntity {
     @NotNull
     private int productQuantity;
 
-//    @ManyToOne
-//    @JoinColumn
-//
-//
-//
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private CategoryEntity category;
 
+    @ManyToOne
+    @JoinColumn(name = "provider_id", nullable = false)
+    private ProviderEntity provider;
 }

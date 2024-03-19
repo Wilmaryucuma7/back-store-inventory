@@ -25,6 +25,8 @@ public class UserDetailsServiceImp implements UserDetailsService {
         UserEntity user = userRespository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario o contraseña incorrectos"));
 
+        System.out.println(user);
+
         Collection<? extends GrantedAuthority> authorities = user.getRoles().stream().map(
                 role -> new SimpleGrantedAuthority("ROLE_".concat(role.getName().name()))
         ).collect(Collectors.toSet());
@@ -38,5 +40,4 @@ public class UserDetailsServiceImp implements UserDetailsService {
                 authorities
         );
     }
-
 }

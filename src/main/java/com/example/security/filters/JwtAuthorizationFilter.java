@@ -22,6 +22,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUtils jwtUtils;
 
+    @Autowired
     UserDetailsServiceImp userDetailsServiceImp;
 
     @Override
@@ -29,7 +30,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         String token = request.getHeader("Authorization");
         if (token != null){
             if (jwtUtils.isTokenValid(token)){
+
                 String username = jwtUtils.getUserNameFromToken(token);
+
                 UserDetails userDetails = userDetailsServiceImp.loadUserByUsername(username);
 
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, null, userDetails.getAuthorities());
