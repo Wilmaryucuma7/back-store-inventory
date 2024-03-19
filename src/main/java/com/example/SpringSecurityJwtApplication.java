@@ -19,28 +19,28 @@ import java.util.Set;
 @SpringBootApplication
 public class SpringSecurityJwtApplication {
 
-	@Autowired
-	PasswordEncoder passwordEncoder;
-
-	@Autowired
-	UserRespository userRespository;
+//	@Autowired
+//	PasswordEncoder passwordEncoder;
+//
+//	@Autowired
+//	UserRespository userRespository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringSecurityJwtApplication.class, args);
 	}
 
-	@Bean
-	CommandLineRunner init(){
-		return args -> {
-			UserEntity userEntity = UserEntity.builder()
-			.email("wil@gmail.com")
-					.username("wil")
-					.password(passwordEncoder.encode("1234"))
-					.roles(new HashSet<>(Collections.singletonList(RoleEntity.builder().name(ERole.valueOf(ERole.ADMIN.name())).build()
-                    ))).build();
-
-			userRespository.save(userEntity);
-		};
-	}
+//	@Bean
+//	CommandLineRunner init(){
+//		return args -> {
+//			UserEntity userEntity = UserEntity.builder()
+//			.email("wil@gmail.com")
+//					.username("wil")
+//					.password(passwordEncoder.encode("1234"))
+//					.roles(new HashSet<>(Collections.singletonList(RoleEntity.builder().name(ERole.valueOf(ERole.ADMIN.name())).build()
+//                    ))).build();
+//
+//			userRespository.save(userEntity);
+//		};
+//	}
 
 }
