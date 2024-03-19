@@ -44,6 +44,31 @@ public class ProvidersController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/update/{providerId}")
+    public ResponseEntity<?> updateProvider(@PathVariable String providerId, @Valid @RequestBody ProviderEntity provider) {
+        JSONObject response = new JSONObject().appendField("error", true);
+        try {
+            ProviderEntity providerEntity = providerRepository.findById(providerId).orElse(null);
+            if (providerEntity == null) {
+                response.put("response", "El proveedor seleccionado no existe");
+                return ResponseEntity.badRequest().body(response);
+            }
+            providerEntity.setProviderName(provider.getProviderName());
+            providerEntity.setProviderEmail(provider.getProviderEmail());
+            providerEntity.setProviderPhone(provider.getProviderPhone());
+            providerEntity.setProviderAddress(provider.getProviderAddress());
+            providerRepository.save(providerEntity);
+
+            response.put("error", false);
+            response.put("response", "El proveedor se ha actualizado correctamente");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("response", "Ha ocurrido un error al actualizar el proveedor");
+            return ResponseEntity.internalServerError().body(response);
+        }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{providerId}")
     public ResponseEntity<?> deleteProvider(@PathVariable String providerId) {
         JSONObject response = new JSONObject().appendField("error", true);
@@ -91,6 +116,25 @@ public class ProvidersController {
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             response.put("response", "Ha ocurrido un error al obtener los proveedores");
+            return ResponseEntity.internalServerError().body(response);
+        }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("get-by-id/{providerId}")
+    public ResponseEntity<?> getProviderById(@PathVariable String providerId){
+        JSONObject response = new JSONObject().appendField("error", true);
+        try {
+            ProviderEntity provider = providerRepository.findById(providerId).orElse(null);
+            if (provider == null) {
+                response.put("response", "El proveedor seleccionado no existe");
+                return ResponseEntity.badRequest().body(response);
+            }
+            response.put("response", provider);
+            response.put("error", false);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("response", "Ha ocurrido un error al obtener el proveedor");
             return ResponseEntity.internalServerError().body(response);
         }
     }
