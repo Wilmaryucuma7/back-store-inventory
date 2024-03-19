@@ -36,10 +36,10 @@ public class ProductEntity {
     @NotNull
     private int productQuantity;
 
-    @ManyToOne
-    @JoinColumn
-
-
-
+//    @ManyToOne
+//    @JoinColumn
+//
+//
+//
 
 }
