@@ -58,8 +58,8 @@ public class ProvidersController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("get/{page}")
-    public ResponseEntity<?> getProviders(@PathVariable int page){
+    @GetMapping("get")
+    public ResponseEntity<?> getProviders(){
         JSONObject response = new JSONObject().appendField("error", true);
         try {
             List<ProviderEntity> providers = (List<ProviderEntity>) providerRepository.findAll();
